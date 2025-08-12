@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Employee Performance Dashboard</title>
+  <style>
+    /* Basic styles (same as before) */
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background: #f4f7fa;
+      margin: 0; padding: 0;
+      color: #333;
+      display: flex;
+      flex-direction: column;
+      min-height: 100vh;
+    }
+    nav {
+      background: #2c3e50;
+      padding: 1rem 2rem;
+      color: white;
+      font-size: 1.5rem;
+      font-weight: 700;
+      box-shadow: 0 2px 6px rgba(0,0,0,0.15);
+    }
+    .container {
+      max-width: 960px;
+      margin: 2rem auto;
+      background: white;
+      padding: 2rem;
+      border-radius: 8px;
+      box-shadow: 0 8px 20px rgba(0,0,0,0.1);
+      flex-grow: 1;
+      display: flex;
+      flex-direction: column;
+    }
+    h1 {
+      text-align: center;
+      color: #34495e;
+      margin-bottom: 1.5rem;
+    }
+    .tabs {
+      display: flex;
+      justify-content: center;
+      gap: 1rem;
+      margin-bottom: 2rem;
+    }
+    .tabs button {
+      padding: 0.6rem 1.5rem;
+      border: none;
+      background: #ecf0f1;
+      border-radius: 30px;
+      font-weight: 600;
+      color: #34495e;
+      cursor: pointer;
+      box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+      transition: background-color 0.3s ease, color 0.3s ease;
+      min-width: 140px;
+      font-size: 1rem;
+    }
+    .tabs button:hover {
+      background: #3498db;
+      color: white;
+      box-shadow: 0 4px 10px rgba(52,152,219,0.4);
+    }
+    .tabs button.active {
+      background: #2980b9;
+      color: white;
+      box-shadow: 0 6px 14px rgba(41,128,185,0.5);
+    }
+    .chart-container {
+      flex-grow: 1;
+      text-align: center;
+    }
+    .chart-container img {
+      max-width: 100%;
+      height: auto;
+      border-radius: 12px;
+      box-shadow: 0 8px 25px rgba(0,0,0,0.15);
+      border: 1px solid #ddd;
+      transition: transform 0.3s ease;
+    }
+    .chart-container img:hover {
+      transform: scale(1.02);
+    }
+    ul.emp-list {
+      list-style: none;
+      padding-left: 0;
+      max-width: 400px;
+      margin: 0 auto 1rem auto;
+      text-align: left;
+    }
+    ul.emp-list li {
+      margin-bottom: 0.5rem;
+      font-size: 1.1rem;
+    }
+    ul.emp-list li a {
+      color: #2980b9;
+      text-decoration: none;
+      font-weight: 600;
+    }
+    ul.emp-list li a:hover {
+      text-decoration: underline;
+    }
+    @media (max-width: 600px) {
+      .tabs {
+        flex-direction: column;
+        gap: 0.8rem;
+      }
+      .tabs button {
+        min-width: auto;
+        width: 100%;
+      }
+    }
+  </style>
+</head>
+<body>
+
+<nav>Employee Performance Dashboard</nav>
+
+<div class="container">
+  <h1>Insights</h1>
+
+  <div class="tabs">
+    <button id="btnTopPerformers" class="active" onclick="showTab('topPerformers')">Top Performers</button>
+    <button id="btnAvgSalary" onclick="showTab('avgSalary')">Avg Salaries</button>
+    <button id="btnSalaryPerf" onclick="showTab('salaryPerformance')">Salary vs Performance</button>
+    <button id="btnHiringTrends" onclick="showTab('hiringTrends')">Hiring Trends</button>
+  </div>
+
+  <div class="chart-container">
+
+    <!-- Top Performers: show clickable list + chart -->
+    <div id="topPerformers" style="display: block;">
+      <ul class="emp-list">
+        {% for emp in top_performers %}
+          <li>
+            <a href="{{ url_for('employee_profile', emp_id=emp.emp_id) }}">{{ emp.emp_name }}</a>
+            — Score: {{ emp.performance_score }}
+          </li>
+        {% endfor %}
+      </ul>
+      <img src="{{ url_for('static', filename=top_perf_img) }}" alt="Top Performers Chart" />
+    </div>
+
+    <!-- Avg Salaries Chart -->
+    <div id="avgSalary" style="display: none;">
+      <img src="{{ url_for('static', filename=avg_salary_img) }}" alt="Average Salary Chart" />
+    </div>
+
+    <!-- Salary vs Performance Chart -->
+    <div id="salaryPerformance" style="display: none;">
+      <img src="{{ url_for('static', filename=salary_perf_img) }}" alt="Salary vs Performance Chart" />
+    </div>
+
+    <!-- Hiring Trends Chart -->
+    <div id="hiringTrends" style="display: none;">
+      <img src="{{ url_for('static', filename=hiring_trends_img) }}" alt="Hiring Trends Chart" />
+    </div>
+
+  </div>
+</div>
+
+<script>
+  function showTab(tabId) {
+    const tabs = ['topPerformers', 'avgSalary', 'salaryPerformance', 'hiringTrends'];
+    const btns = ['btnTopPerformers', 'btnAvgSalary', 'btnSalaryPerf', 'btnHiringTrends'];
+
+    tabs.forEach(id => {
+      document.getElementById(id).style.display = (id === tabId) ? 'block' : 'none';
+    });
+
+    btns.forEach(btnId => {
+      document.getElementById(btnId).classList.remove('active');
+    });
+
+    if (tabId === 'topPerformers') document.getElementById('btnTopPerformers').classList.add('active');
+    else if (tabId === 'avgSalary') document.getElementById('btnAvgSalary').classList.add('active');
+    else if (tabId === 'salaryPerformance') document.getElementById('btnSalaryPerf').classList.add('active');
+    else if (tabId === 'hiringTrends') document.getElementById('btnHiringTrends').classList.add('active');
+  }
+</script>
+
+</body>
+</html>

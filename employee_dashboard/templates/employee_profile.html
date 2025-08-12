@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Employee Profile - {{ employee.emp_name }}</title>
+  <style>
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background: #f0f2f5;
+      margin: 0;
+      padding: 20px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      min-height: 100vh;
+    }
+    .card {
+      background: white;
+      padding: 30px 40px;
+      border-radius: 12px;
+      box-shadow: 0 12px 30px rgba(0, 0, 0, 0.12);
+      max-width: 450px;
+      width: 100%;
+      text-align: center;
+    }
+    h1 {
+      margin-bottom: 24px;
+      color: #2c3e50;
+      font-weight: 700;
+    }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-bottom: 30px;
+    }
+    th, td {
+      padding: 12px 15px;
+      border-bottom: 1px solid #ddd;
+      text-align: left;
+    }
+    th {
+      background-color: #2980b9;
+      color: white;
+      font-weight: 600;
+      width: 40%;
+    }
+    td {
+      color: #34495e;
+    }
+    .back-btn {
+      display: inline-block;
+      background-color: #2980b9;
+      color: white;
+      padding: 12px 28px;
+      border-radius: 30px;
+      text-decoration: none;
+      font-weight: 600;
+      transition: background-color 0.3s ease;
+    }
+    .back-btn:hover {
+      background-color: #1f618d;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="card">
+    <h1>{{ employee.emp_name }}</h1>
+    <table>
+      <tr><th>Employee ID</th><td>{{ employee.emp_id }}</td></tr>
+      <tr><th>Department</th><td>{{ employee.department }}</td></tr>
+      <tr><th>Job Title</th><td>{{ employee.job_title }}</td></tr>
+      <tr><th>Hire Date</th><td>{{ employee.hire_date }}</td></tr>
+      <tr><th>Salary</th><td>${{ "{:,.2f}".format(employee.salary) }}</td></tr>
+      <tr><th>Performance Score</th><td>{{ employee.performance_score }}</td></tr>
+    </table>
+
+    <a href="{{ url_for('dashboard') }}" class="back-btn">Back to Dashboard</a>
+  </div>
+
+</body>
+</html>
