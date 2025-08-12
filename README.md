@@ -26,14 +26,14 @@ An interactive web-based dashboard built with **Flask** and **MySQL** to analyze
 git clone https://github.com/yourusername/employee_dashboard.git
 cd employee_dashboard
 
-**Configure Database**  
-Update the MySQL connection settings in app.py:
+**4️⃣Configure Database**    
+Update the MySQL connection settings in app.py:  
 
 db_config = {
-    'host': 'localhost',
-    'user': 'root',
-    'password': 'yourpassword',
-    'database': 'employeeDatabase'
+    'host': 'localhost',  
+    'user': 'root',  
+    'password': 'yourpassword',  
+    'database': 'employeeDatabase'  
     }
 
 **4️⃣ Run the Application**  
